@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header id="page-header">
+      <h1 class="mb-5">
+        <p>
+          <span class="google-blue">S</span>
+          <span class="google-red">e</span>
+          <span class="google-yellow">a</span>
+          <span class="google-blue">r</span>
+          <span class="google-green">c</span>
+          <span class="google-red">h</span>
+        </p>
+  
+      </h1>
+      <div id="contributors">
+        <h5>Contributors</h5>
+        <ul>
+          <li>
+            khaled_152669 <br />
+            <span>
+              Khaled Shaaban 
+            </span>
+          </li>
+          <li>
+            ghazal_179556 <br />
+            <span>
+              Ghazal Kaadan
+            </span>
+          </li>
+          <li>
+            hebat_allah_111278 <br />
+            <span>
+              Heba Safadi
+            </span>
+          </li>
+          <li>
+            hussein_152830 <br />
+            <span>
+              Hussein Ismael
+            </span>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <div class="container">
+      <div class="row">
+        <form id="search-form" class="col-8 mx-auto mb-4" method="POST" action="search">
+            <div class="form-group my-4">
+              <input type="text" id="query" placeholder="Enter your search query" required class="form-control">
+            </div>
+            <div class="form-group d-flex">
+              <div class="col">
+                <select id="model" class="form-control">
+                    <option value="boolean">Boolean Model</option>
+                    <option value="extended_boolean">Extended Boolean Model</option>
+                    <option value="vector">Vector Space Model</option>
+                </select>
+              </div>
+              <div class="col">
+                <select id="language" class="form-control">
+                    <option value="en">English</option>
+                    <option value="ar">Arabic</option>
+                </select>
+              </div>
+              <div class="col">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </div>
+        </form>
+        <div class="col-8" id="results"></div>
+      </div>
+    </div>
+
+    <script>
+
+        // Function to highlight query terms in the result text
+        function highlightText(text, query) {
+          const queryWords = query.split(/\s+/);  // Split the query into words
+          queryWords.forEach(word => {
+            // Create a regex for each word to match case-insensitively
+            const regex = new RegExp(`(${word})`, 'gi');
+            text = text.replace(regex, '<span class="highlight">$1</span>');
+          });
+          return text;
+        }
+        
+        document.getElementById('search-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = document.getElementById('query').value;
+            const model = document.getElementById('model').value;
+            const language = document.getElementById('language').value;
+
+            const response = await fetch('/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query, model, language })
+            });
+
+            const data = await response.json();
+            const resultsDiv = document.getElementById('results');
+
+            resultsDiv.classList.remove('ar')
+            resultsDiv.classList.remove('en')            
+            resultsDiv.classList.add(language)
+
+            resultsDiv.innerHTML = ''
+
+            document.body.classList.add('has-results');
+            document.getElementById('page-header').classList.add('has-results');
+            document.getElementById('search-form').classList.replace('col-8', 'col-4');
+            
+            if (data.results.length < 1) {
+              resultsDiv.innerHTML = '<h4 class="px-3">No results found...</h4>';
+              return;
+            }
+
+            data.results.forEach(result => {
+
+              // Display the result text and rank
+              const resultElement = document.createElement('div');
+              resultElement.classList.add('result');
+              
+              // Highlight the query terms in the result text
+              const highlightedText = highlightText(result.text, query);
+
+              // Display the result text with highlighted terms
+
+              var stars = '&#9733'
+              
+              for (let i = 0; i <= result.rank; i++) {
+                stars += ' &#9733;'
+              }
+              resultElement.innerHTML = `
+                <div class="px-4">
+                  <p><strong class="google-blue">${stars} | </strong> ${highlightedText}</p>
+                  <hr />
+                </div>
+              `;
+
+              resultsDiv.appendChild(resultElement);
+            });
+        });
+    </script>
+</body>
+</html>

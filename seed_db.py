@@ -1,0 +1,37 @@
+from app import app, db, FAQ
+
+faqs = [
+    # arabic
+    FAQ(question="متى أكون بحاجة إلى تصريح لإقامة فعالية أو نشاط؟", answer="الجهات التالية بحاجة إلى تصريح لإقامة نشاط: الفنادق ومراكز التسوق والمطاعم أو أي وجهة تنظم فعاليات ترفيهيّة بشكل متكرر مثل الحفلات الموسيقية أو العروض أو أنشطة الأطفال في منطقة ألعاب مؤقتة.", language="ar"),    
+    FAQ(question="ماذا يحصل في حال تمّ رفض تصريحي لإقامة نشاط؟", answer="يمكنك مناقشة حالتك من خلال التواصل مع قسم التصاريح الإلكترونية في دائرة الاقتصاد والسياحة بدبي عن طريق البوابة الإلكترونية. سيتم الرد على التساؤلات والنظر في كلّ حالة على حِدة.", language="ar"),
+    FAQ(question="متى سأحصل على تصريح إقامة النشاط بعد الموافقة عليه؟", answer="عند الموافقة، سوف يتمّ إصدار تصريحك في غصون يوم عمل واحد.", language="ar"),
+    FAQ(question="ما هي المدة التي يمكن أن يستمرّ خلالها النشاط؟", answer="يمكن أن تستمرّ الأنشطة من يومٍ واحد إلى ثلاثة أشهر.", language="ar"),
+    FAQ(question="من يمكنه التقدم بطلب للحصول على هذه الخدمة؟", answer="يُمكن للفنادق فقط التقدم بطلب للحصول على تصريح بتركيب خيمة مؤقتة. أما بالنسبة للمواقع الأخرى، فيجب تقديم الطلبات إلى دائرة التنمية الاقتصادية.", language="ar"),
+    FAQ(question="متى يمكنني التقدم بطلب الحصول على تصريح بتركيب خيمة مؤقتة؟", answer="يمكنك التقدم بطلب الحصول على تصريح بتركيب خيمة مؤقتة قبل موعد إقامة الفعالية بـ 24 ساعة.", language="ar"),
+    FAQ(question="هل يمكنني التقدم بطلب الحصول على تصريح لإقامة فعالية ترفيهية في خيمة ترفيهية؟", answer="نعم، حالما يتمّ إصدار تصريح بتركيب خيمة ترفيهية، سوف تتمّ إضافة الخيمة إلى قائمة المواقع الفرعية التابعة للفندق. يمكنك التقدُّم بطلب للحصول على تصريح لإقامة الفعالية الترفيهية عن طريق اختياره من هذه القائمة.", language="ar"),
+    FAQ(question="هل يمكنني أن أعدّل طلبي للحصول على تصريح لتركيب خيمة ترفيهية؟", answer="لا، ولكن يمكنك التقدُّم بطلب للحصول على تصريح جديد.", language="ar"),
+    FAQ(question="هل يمكنني تمديد طلبي للحصول على تصريح بتركيب خمية ترفيهية؟", answer="يمكنك التقدُّم بطلب الحصول على تصريح جديد وإدراج التواريخ الجديدة الخاصة بك.", language="ar"),
+    FAQ(question="هل يمكنني إضافة نوع جديد من الأنشطة إلى تصريح تم إصداره سابقاً؟", answer="نعم، هذا ممكن لتصاريح الأنشطة الترفيهية.", language="ar"),
+    FAQ(question="كم مرة يمكنني تعديل تصريح إقامة النشاطات؟", answer="يمكنك إجراء تعديلات بقدر ما تشاء. يجب إجراء بعض التعديلات قبل بدء النشاط فيما يمكن القيام بتعديلات أخرى عندما يكون النشاط لا يزال قائماً.", language="ar"),
+    FAQ(question="هل تتطلب هذه الخدمة دفع أي رسوم؟", answer="لا، إنها خدمة مجانية.", language="ar"),
+    FAQ(question="ما هي أنواع الأنشطة الخاصة؟", answer="فعاليات تتّسم بطابع شخصي مثل أعياد الميلاد وحفلات الخطبة والزفاف. وتندرج بعض فعاليات الشركات ضمن الأنشطة الخاصة مثل اجتماعات الموظفين (طالما أنّ الحضور من الموظفين العاملين في المؤسسة نفسها).", language="ar"),
+    FAQ(question="ما هي المدة التي تستغرقها الموافقة على تعديل النشاط؟", answer="بمجرّد الموافقة، سيتمّ تعديل تصريحك في غضون يوم عملٍ واحد.", language="ar"),
+    FAQ(question="متى يمكنني التقدم بطلب لإقامة نشاط خاص؟", answer="بمجرّد أن تقوم بحجز الموقع الخاص بالفعالية، يمكنك التقدم بطلب للحصول على تصريح لإقامة نشاطٍ خاص. يمكن تلقّي الطلبات حتى 24 ساعة قبل بدء الفعالية.", language="ar"),
+
+    # english
+    FAQ(question="Is it safe to travel to Dubai?", answer="Dubai is one of the world's safest destinations. The UAE Ministry of Health and Prevention (MoHAP) along with other relevant authorities continue to prioritise and assure the safety and the well-being of all visitors and residents of Dubai. Dubai's Department of Economy and Tourism continues to work diligently in cooperation with UAE's public health authorities, including the Dubai Health Authority, to ensure rigorously high standards of public hygiene and safety, in line with international best practices, are adhered to so the well-being of all residents and visitors remain uncompromised at all times.", language="en"),
+    FAQ(question="What are the international travel requirements when travelling to Dubai?", answer="Effective 8 November 2022, passengers travelling to Dubai from all countries do not need to provide proof of vaccination or negative PCR test results. Passengers travelling onward from Dubai or transiting through the airport must check requirements for their destination. All passengers must comply with visa requirements depending on their nationality.", language="en"),
+    FAQ(question="Do I need travel insurance when coming to Dubai?", answer="You may need medical travel insurance when travelling to Dubai. It is best to check with your airline or when applying for a visa to the UAE about your specific travel insurance requirements.", language="en"),
+    FAQ(question="What are the procedures to follow ahead of travelling to Dubai?", answer="Please check your country's travel advisory for latest guidance on outbound trips, as well as the requirements of the airline. Ensure that you have met all entry and visa requirements to visit the UAE.", language="en"),
+    FAQ(question="Do I need a COVID-19 test when travelling to Dubai?", answer="Effective 8 November 2022, passengers travelling to Dubai from all countries do not need to provide proof of vaccination or negative PCR test results. Passengers travelling onward from Dubai or transiting through the airport must check requirements for their destination.", language="en"),
+    FAQ(question="Are transit travellers required to follow the same procedures related to conducting Covid-19 PCR tests?", answer="For transit passengers, the rules and conditions for entry at the final destination will apply. Passengers must check their country's travel advisory for latest guidance on outbound trips, as well as the requirements of the airline.", language="en"),
+    FAQ(question="What are the procedures when departing from Dubai?", answer="Passengers departing Dubai Airports will need to do a PCR test only if it is mandated by the country they are travelling to. A rapid PCR or Rapid Antigen test will be available at the airport to travellers departing from Dubai if the destination they are travelling to requires it. Passengers are advised to check the travel protocols of their carrier and the destination they are travelling to. Note: Airlines have the right to deny travellers if they display any symptoms of COVID-19.", language="en"),
+    FAQ(question="Do I have to wear a mask during my holiday in Dubai?", answer="No, wearing of masks is no longer required in all indoor or outdoor venues, except at medical facilities (clinics and hospitals).", language="en"),
+    FAQ(question="Do tourists have to pay for the treatment and quarantine stay in a hotel if they show symptoms and/or require a second test and the test is positive?", answer="The traveller will bear the cost of treatment and quarantine were required. For more information, please visit this Dubai Health Authority page. If the COVID-19 test result is positive, the traveller is required to adhere to the isolation guidelines.", language="en"),
+    FAQ(question="Do I need a visa and if yes, how do I apply?", answer="For all the visa related information please reach out to The General Directorate of Residency and Foreigners Affairs and check your country's travel advisory for latest guidance on outbound trips.", language="en"),
+    FAQ(question="Are the Emirates airline flight routes fully restored?", answer="Please click here for information on which destinations Emirates is flying to and from.", language="en"),
+]
+
+with app.app_context():
+  with db.session.begin():
+    db.session.add_all(faqs)
